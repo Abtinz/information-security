@@ -100,7 +100,7 @@ def k_char_mode(inputted_arguments:InputtedArguments,staring_time):
             current_length = len(inputted_arguments.k_char)
             
             while True:
-                if current_length > 20 :
+                if current_length > 10 :
                     print(Failure_message + f"\n   -total attempts{total_attempts}\n    -total time:{time.time() - staring_time}")
                     break
                 if current_length == len(inputted_arguments.k_char):
