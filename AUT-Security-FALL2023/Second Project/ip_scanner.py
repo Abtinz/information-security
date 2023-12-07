@@ -2,7 +2,15 @@ import ipaddress
 from icmplib import ping
 import pickle
 
+
 def ip_scanner(start_ip, end_ip):
+    '''
+        this function will get starting and ending range of scanning ip for 
+        checking if they are alive or not and will save them is their result files...
+        params:
+           start_ip -> this ip will show starting range of scanning process 
+           end_ip -> this ip will show ending range of scanning process 
+    '''
 
     print("IP Scanning process is started")   
 
@@ -38,3 +46,5 @@ def ip_scanner(start_ip, end_ip):
     with open('not_alive_list.txt', 'a') as file:
         for ip in not_alive_devices:
             file.write(str(ip))
+    
+    print("IP Scanning process is finished")   
