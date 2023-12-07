@@ -103,12 +103,7 @@ def k_char_mode(inputted_arguments:InputtedArguments,staring_time):
                 if current_length > 10 :
                     print(Failure_message + f"\n   -total attempts{total_attempts}\n    -total time:{time.time() - staring_time}")
                     break
-                if current_length == len(inputted_arguments.k_char):
-                    for permutation in list(itertools.permutations(inputted_arguments.k_char, current_length)):
-                        total_attempts += 1
-                        if ''.join(permutation) == inputted_arguments.password:
-                            print(Success_message + f"\n    -total attempts{total_attempts}\n    -total time:{time.time() - staring_time}")
-                            break
+                itsFounded = False  
 
                 for combination in list(itertools.product(search_space_list, repeat=current_length - len(inputted_arguments.k_char))):
                     current_space = list(''.join(combination)) + inputted_arguments.k_char
@@ -116,7 +111,10 @@ def k_char_mode(inputted_arguments:InputtedArguments,staring_time):
                         total_attempts += 1
                         if ''.join(permutation) == inputted_arguments.password:
                            print(Success_message + f"\n    -total attempts{total_attempts}\n    -total time:{time.time() - staring_time}")
+                           itsFounded = True
                            break
+                    if itsFounded: break 
+                if itsFounded: break 
                 current_length += 1
     else:
             
