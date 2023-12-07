@@ -1,7 +1,5 @@
 import ipaddress
 from icmplib import ping
-import pickle
-
 
 def ip_scanner(start_ip, end_ip):
     '''
