@@ -1,5 +1,5 @@
 import argparse
-import ip_scanner
+from ip_scanner import scanner
 
 def main():
     parser = argparse.ArgumentParser(description='IP Scanner TurboV.2000')
@@ -11,18 +11,11 @@ def main():
     parser.add_argument("-udp", required=False, nargs=2, type=int)
     args = parser.parse_args()
     if args.ipscan:
-            ip_scanner(
-                  start =args.ip[0], 
-                  end = args.ip[1]
+            
+            scanner(
+                  start_ip =args.ip[0], 
+                  end_ip = args.ip[1],
+                  address_counts = 2 ** (32 - args.m)
             )
-    if args.portscan:
-        if args.tcp is not None:
-                mode = "tcp"
-                start = args.tcp[0]
-                end = args.tcp[1]
-                scan_ports(start, end, mode)
-        elif args.udp is not None:
-                mode = "udp"
-                start = args.udp[0]
-                end = args.udp[1]
-                scan_ports(start, end, mode)
+    
+main()
