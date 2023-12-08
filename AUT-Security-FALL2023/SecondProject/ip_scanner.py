@@ -57,6 +57,7 @@ def scanner(start_ip, end_ip, address_counts):
     print("IP Scanning process is finished")   
 
 
+
 def simple_scanner(start, end):
     '''
         this function will get starting and ending range of scanning ip for without subnet mask
@@ -77,19 +78,23 @@ def simple_scanner(start, end):
     not_active_devices = []
     with open('scanner_result.txt', 'a') as file:
     
-        for ip in ip_range:
+        for current_ip in ip_range:
             
             #checking that if ip is alive or not
-            is_current_ip_alive = ping(address = ip, count=2, interval=0.5).is_alive
+            try:
 
-            if is_current_ip_alive:                
-                print(f"active IP:{str(ip)} ...")
-                file.write(f"active IP:{str(ip)} ...\n")
-                active_devices.append(ip)
-            else:
-                print(f"not active IP:{str(ip)} ...")
-                file.write(f"not active IP:{str(ip)} ...\n")
-                not_active_devices.append(ip)
+                socket.setdefaulttimeout(1)
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((current_ip, 80))
+
+                active_devices.append(current_ip)
+                print(f"active IP:{str(current_ip)} ...")
+                file.write(f"active IP:{str(current_ip)} ...\n")
+
+            except Exception as error:
+           
+                not_active_devices.append(current_ip)
+                file.write(f"not active IP:{str(current_ip)} ...\n")
+                print(f"not active IP:{str(current_ip)} ...")
 
     
     with open('active_list.txt', 'a') as file:
