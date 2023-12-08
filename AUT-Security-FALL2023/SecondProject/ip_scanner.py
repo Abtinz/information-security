@@ -1,5 +1,4 @@
 import ipaddress
-from icmplib import ping
 import socket
 import struct
 
