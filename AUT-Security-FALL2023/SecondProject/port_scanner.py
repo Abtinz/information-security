@@ -1,31 +1,43 @@
 import socket
 
-def scan_ports(start_port, end_port, protocol_mode):
-    with open('active_list.txt', 'r') as file:
-        alive_devices = file.read().splitlines()
-        socket_type = socket.SOCK_STREAM if protocol_mode == "tcp" else socket.SOCK_DGRAM
-        print("Start Scanning")
+ip_address = '192.168.1.5'
 
-        with open(protocol_mode + '_scan_result.txt', 'a') as file:
-            for target in alive_devices:
-                for port in range(start_port, end_port + 1):
-                    sock = socket.socket(socket.AF_INET, socket_type)
-                    sock.settimeout(1)
-                    result = sock.connect_ex((target, port))
-                    if result == 0:
-                        print(protocol_mode + " Port " + str(port) + " for " + str(target) + " is open" + '\t------------>\t' + get_service_name(port, protocol_mode) + '\n')
-                        file.write(
-                            protocol_mode + " Port " + str(port) + " for " + str(target) + " is open" + '\t------------>\t' + get_service_name(port, protocol_mode) + '\n')
-                    else:
-                        print(protocol_mode + " Port " + str(port) + " for " + str(target) + " is closed\n")
-                        file.write(protocol_mode + " Port " + str(port) + " for " + str(target) + " is closed\n")
-                    sock.close()
+def port_scanner(start_port, end_port, protocol,file_root):
+    '''
+    this function will scan ports of 192.168.1.5 ip and save them in scanning given protocol files
+    params:
+        start_ip -> this int number will show starting range of scanning process 
+        end_ip -> this int number will show ending range of scanning process 
+        protocol -> scanning port on udp or tcp protocols?
+        file_root -> saving root of scanning results
+    '''
+    open_ports = []
+    closed_ports = []
+
+    for port in range(start_port, end_port + 1):
+        try:
+            sock = socket.socket(socket.AF_INET, protocol)
+            sock.settimeout(1)
+            is_open = sock.connect_ex((ip_address, port)) != 0
+            if is_open:
+                closed_ports.append(port)
+                print(f"closed Port:{port}")
+            else:
+                open_ports.append(port)
+                print(f"open Port:{port}")
+
+            sock.close()
+        except socket.error as error:
+           print(error)
     
+     
+    with open(file_root, 'a') as file:
+        file.write("OPEN PORTS:\n")
+        for ip in open_ports:
+            file.write(str(ip)+"\n")
 
-
-def get_service_name(port, protocol):
-    try:
-        service = socket.getservbyport(port, protocol.lower())
-        return service
-    except OSError:
-        return "Can not get service name"
+        file.write("CLOSED PORTS:\n")
+        for ip in closed_ports:
+            file.write(str(ip)+"\n")
+    
+    print("IP Scanning process is finished") 
