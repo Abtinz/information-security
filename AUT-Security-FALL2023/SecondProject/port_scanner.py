@@ -3,8 +3,7 @@ import socket
 ip_address = '192.168.1.5'
 
 def port_scanner(start_port, end_port, protocol,file_root):
-    '''
-    this function will scan ports of 192.168.1.5 ip and save them in scanning given protocol files
+    ''' this function will scan ports of 192.168.1.5 ip and save them in scanning given protocol files
     params:
         start_ip -> this int number will show starting range of scanning process 
         end_ip -> this int number will show ending range of scanning process 
